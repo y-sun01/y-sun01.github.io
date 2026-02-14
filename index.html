@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Will you be my Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>💌 Valentine</title>
   <style>
     :root{
-      --bg1:#ffe6f2;
-      --bg2:#fff7fb;
+      --bg1:#ffe6ef;
+      --bg2:#fff6fb;
       --pink:#ff4d8d;
       --pink2:#ff77aa;
       --ink:#2b2b2b;
@@ -16,530 +16,579 @@
       --radius: 22px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(1200px 800px at 20% 10%, var(--bg2), transparent 55%),
+                  radial-gradient(900px 700px at 80% 30%, #ffd6e5, transparent 60%),
+                  linear-gradient(160deg, var(--bg1), #fff);
       font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
-      background:
-        radial-gradient(1000px 600px at 20% 20%, var(--bg2), transparent 60%),
-        radial-gradient(900px 700px at 80% 25%, #ffe0ec, transparent 55%),
-        radial-gradient(900px 700px at 50% 90%, #ffd6e6, transparent 60%),
-        linear-gradient(140deg, var(--bg1), var(--bg2));
       overflow:hidden;
+      padding:18px;
     }
 
-    /* floating hearts */
-    .hearts{position:fixed; inset:0; pointer-events:none; opacity:.55}
+    /* floating hearts canvas layer */
+    .hearts{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
     .heart{
       position:absolute;
-      width:16px; height:16px;
-      background:var(--pink);
+      width:18px; height:18px;
       transform: rotate(45deg);
+      background: var(--pink);
+      opacity:.18;
       border-radius: 4px;
-      filter: drop-shadow(0 6px 10px rgba(255,77,141,.25));
-      animation: floatUp linear infinite;
+      animation: floatUp linear forwards;
     }
     .heart::before,.heart::after{
       content:"";
       position:absolute;
-      width:16px; height:16px;
-      background:inherit;
+      width:18px;height:18px;
+      background: inherit;
       border-radius:50%;
     }
-    .heart::before{left:-8px; top:0}
-    .heart::after{left:0; top:-8px}
+    .heart::before{ left:-9px; top:0;}
+    .heart::after{ left:0; top:-9px;}
+
     @keyframes floatUp{
-      from { transform: translateY(120vh) rotate(45deg); opacity:0 }
-      10% { opacity:.9 }
-      to { transform: translateY(-30vh) rotate(45deg); opacity:0 }
+      from{ transform: translateY(0) rotate(45deg) scale(.9); }
+      to{ transform: translateY(-120svh) rotate(45deg) scale(1.25); }
     }
 
-    /* layout */
-    .wrap{
-      height:100%;
-      display:grid;
-      place-items:center;
-      padding:24px;
-    }
-    .card{
-      width:min(860px, 95vw);
-      min-height:min(560px, 85vh);
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,.55);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+    /* main card */
+    .shell{
+      width:min(420px, 92vw);
       position:relative;
-      overflow:hidden;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
+      z-index:2;
     }
-    @media (max-width: 820px){
-      .card{grid-template-columns:1fr; min-height: 620px;}
+    .status{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin:0 6px 10px;
+      font-size:13px;
+      opacity:.75;
     }
-
-    /* left: envelope */
-    .left{
-      padding:28px 26px;
+    .chip{
+      background:#ffffff90;
+      border:1px solid #ffffffd0;
+      padding:8px 10px;
+      border-radius:999px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.06);
+      backdrop-filter: blur(6px);
       display:flex;
       align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
+      gap:8px;
     }
-    .right{
-      padding:34px 30px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:18px;
+    .btn-mini{
+      border:none;
+      background:transparent;
+      font:inherit;
+      color:var(--pink);
+      font-weight:600;
+      padding:0;
+      cursor:pointer;
+      text-decoration:underline;
     }
 
+    .card{
+      background:var(--card);
+      border:1px solid #ffffffd0;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* envelope scene */
+    .scene{
+      padding:22px 18px 16px;
+      text-align:center;
+    }
     .title{
-      font-size: clamp(28px, 3.4vw, 44px);
-      line-height:1.05;
-      margin:0;
-      letter-spacing:-.02em;
+      font-size:18px;
+      margin:0 0 6px;
+      letter-spacing:.2px;
     }
     .subtitle{
-      margin:0;
-      font-size: clamp(15px, 1.7vw, 18px);
-      opacity:.85;
+      margin:0 0 14px;
+      opacity:.78;
+      font-size:14px;
     }
 
-    .btnrow{
+    .envelope-wrap{
       display:flex;
-      gap:14px;
-      margin-top:8px;
-      align-items:center;
-      flex-wrap:wrap;
-      position:relative;
-    }
-    button{
-      border:none;
-      font-size: 16px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      cursor:pointer;
-      transition: transform .08s ease, box-shadow .18s ease, opacity .18s ease;
+      justify-content:center;
+      padding:12px 0 6px;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
-    button:active{transform:scale(.98)}
-    .yes{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:white;
-      box-shadow: 0 12px 24px rgba(255,77,141,.28);
-      font-weight:700;
-    }
-    .yes:hover{box-shadow: 0 16px 30px rgba(255,77,141,.34)}
-    .no{
-      background: #fff;
-      color: #444;
-      border: 1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 20px rgba(0,0,0,.08);
-      font-weight:600;
-      position:relative;
-    }
-
-    /* envelope */
     .envelope{
-      width:min(340px, 76vw);
-      height:230px;
+      width:240px;
+      height:160px;
       position:relative;
-      transform: translateY(6px);
-      filter: drop-shadow(0 18px 30px rgba(0,0,0,.12));
+      transform: translateZ(0);
+      cursor:pointer;
+      filter: drop-shadow(0 14px 18px rgba(0,0,0,.12));
     }
     .env-body{
       position:absolute; inset:0;
-      background: #fff;
-      border-radius: 18px;
+      background: linear-gradient(180deg, #fff, #ffeef6);
+      border-radius:18px;
+      border:1px solid #ffd1e2;
       overflow:hidden;
-      border: 1px solid rgba(0,0,0,.06);
     }
-    .env-bottom{
-      position:absolute; left:0; right:0; bottom:-1px; height:62%;
-      background: linear-gradient(180deg, #fff, #ffeaf2);
-      clip-path: polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%);
-      border-top: 1px solid rgba(0,0,0,.06);
-    }
-    .env-side{
+    .env-body:before{
+      content:"";
       position:absolute; inset:0;
-      background: transparent;
-      clip-path: polygon(0 0, 50% 55%, 0 100%);
-      border-left: 1px solid rgba(0,0,0,.06);
-    }
-    .env-side.r{
-      clip-path: polygon(100% 0, 50% 55%, 100% 100%);
-      border-left:none;
-      border-right: 1px solid rgba(0,0,0,.06);
+      background:
+        radial-gradient(260px 140px at 50% 120%, rgba(255,77,141,.18), transparent 60%),
+        linear-gradient(135deg, rgba(255,77,141,.08), transparent 55%);
+      pointer-events:none;
     }
     .env-flap{
-      position:absolute; left:0; right:0; top:-1px; height:62%;
-      background: linear-gradient(180deg, #fff, #ffd4e6);
-      clip-path: polygon(0 0, 50% 70%, 100% 0, 100% 0, 0 0);
-      transform-origin: top center;
-      transform: rotateX(0deg);
-      transition: transform .7s cubic-bezier(.2,.8,.2,1);
-      border-top: 1px solid rgba(0,0,0,.06);
+      position:absolute;
+      left:0; top:0;
+      width:100%; height:100%;
+      transform-origin: 50% 0%;
+      transition: transform 700ms cubic-bezier(.2,.8,.2,1);
+    }
+    .env-flap:before{
+      content:"";
+      position:absolute;
+      left:0; top:-6px;
+      width:100%; height:60%;
+      background: linear-gradient(180deg, #ffd1e2, #fff);
+      clip-path: polygon(0 0, 100% 0, 50% 95%);
+      border-top-left-radius:18px;
+      border-top-right-radius:18px;
+      border:1px solid #ffc0d7;
+      border-bottom:none;
+      box-shadow: 0 8px 18px rgba(255,77,141,.12) inset;
+    }
+    .env-sides:before,
+    .env-sides:after{
+      content:"";
+      position:absolute;
+      top:36%;
+      width:62%;
+      height:70%;
+      background: linear-gradient(180deg, #fff, #ffeef6);
+      border:1px solid #ffd1e2;
+      opacity:.95;
+    }
+    .env-sides:before{
+      left:-2px;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      border-right:none;
+    }
+    .env-sides:after{
+      right:-2px;
+      clip-path: polygon(100% 0, 0 50%, 100% 100%);
+      border-left:none;
+    }
+    .seal{
+      position:absolute;
+      left:50%; top:56%;
+      transform:translate(-50%,-50%);
+      width:46px; height:46px;
+      background: radial-gradient(circle at 30% 30%, #fff, #ffd1e2 40%, #ff77aa);
+      border:1px solid #ff5c98;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 10px 18px rgba(255,77,141,.25);
+      transition: transform 700ms cubic-bezier(.2,.8,.2,1), opacity 400ms ease;
+    }
+    .seal span{
+      font-size:22px;
+      transform: translateY(-1px);
+      filter: drop-shadow(0 1px 0 rgba(255,255,255,.6));
     }
 
     .letter{
       position:absolute;
-      left:14px; right:14px;
+      left:50%;
       bottom:14px;
-      height: 86%;
-      background: #fff;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,.06);
-      transform: translateY(34%) rotate(-1deg);
-      transition: transform .85s cubic-bezier(.2,.9,.2,1);
-      padding:18px 18px 14px;
+      transform:translateX(-50%);
+      width:210px;
+      height:128px;
+      background: linear-gradient(180deg, #fff, #fff6fb);
+      border:1px solid #ffd1e2;
+      border-radius:14px;
+      box-shadow: 0 12px 18px rgba(0,0,0,.08);
       display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .letter h2{
-      margin:0;
-      font-size:18px;
-      letter-spacing:-.01em;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      text-align:center;
+      transition: transform 800ms cubic-bezier(.2,.8,.2,1), opacity 300ms ease;
     }
     .letter p{
       margin:0;
       font-size:14px;
-      line-height:1.35;
+      line-height:1.25rem;
       opacity:.9;
     }
-    .stamp{
-      margin-top:auto;
-      align-self:flex-end;
-      width:54px; height:54px;
-      background: radial-gradient(circle at 30% 30%, #fff, #ffe6f2);
-      border: 1px dashed rgba(255,77,141,.7);
-      border-radius: 14px;
-      display:grid; place-items:center;
-      color: var(--pink);
-      font-size: 22px;
-      transform: rotate(6deg);
+
+    /* opened state */
+    .opened .env-flap{
+      transform: rotateX(180deg);
+    }
+    .opened .seal{
+      transform:translate(-50%,-50%) scale(.85);
+      opacity:.35;
+    }
+    .opened .letter{
+      transform:translateX(-50%) translateY(-34px);
     }
 
-    .opened .env-flap{ transform: rotateX(160deg); }
-    .opened .letter{ transform: translateY(-8%) rotate(0deg); }
-
-    /* success overlay */
-    .overlay{
-      position:absolute; inset:0;
-      display:grid;
-      place-items:center;
-      background: rgba(255, 240, 248, .75);
-      backdrop-filter: blur(10px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .35s ease;
+    /* message panel */
+    .panel{
+      padding:14px 18px 20px;
+      border-top:1px solid #ffffffd0;
+      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.5));
     }
-    .overlay.show{
-      opacity:1;
-      pointer-events:auto;
+    .big{
+      font-size:22px;
+      margin:4px 0 8px;
+      letter-spacing:.2px;
     }
-    .modal{
-      width:min(520px, 90vw);
-      background:#fff;
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(0,0,0,.06);
-      padding: 22px 22px 18px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .modal h3{
-      margin:6px 0 8px;
-      font-size: clamp(22px, 2.6vw, 30px);
-      letter-spacing:-.02em;
-    }
-    .modal p{
+    .msg{
       margin:0 0 14px;
-      opacity:.85;
-      line-height:1.4;
+      font-size:15px;
+      line-height:1.35rem;
+      opacity:.92;
     }
-    .tiny{
+
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      padding-top:6px;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:700;
+      font-size:15px;
+      cursor:pointer;
+      box-shadow: 0 12px 18px rgba(0,0,0,.10);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .yes{
+      background: linear-gradient(180deg, var(--pink), #ff2d7a);
+      color:white;
+    }
+    .no{
+      background: #ffffff;
+      color: var(--pink);
+      border:1px solid #ffd1e2;
+      position:relative;
+    }
+    .hint{
+      text-align:center;
+      margin:12px 0 0;
       font-size:12px;
       opacity:.7;
-      margin-top:12px;
-    }
-    .close{
-      background:#111;
-      color:#fff;
-      font-weight:700;
-      padding:10px 14px;
-      border-radius: 999px;
-      box-shadow: 0 10px 20px rgba(0,0,0,.18);
     }
 
-    /* confetti canvas */
-    canvas#confetti{
-      position:absolute;
-      inset:0;
+    /* confetti hearts burst */
+    .burst{
+      position:fixed;
+      left:50%; top:55%;
+      transform:translate(-50%,-50%);
       pointer-events:none;
+      z-index:10;
+    }
+    .burst i{
+      position:absolute;
+      width:10px; height:10px;
+      transform: rotate(45deg);
+      background: var(--pink);
+      border-radius: 2px;
+      opacity:.9;
+      animation: pop 900ms ease-out forwards;
+    }
+    .burst i::before,.burst i::after{
+      content:"";
+      position:absolute;
+      width:10px;height:10px;
+      background: inherit;
+      border-radius:50%;
+    }
+    .burst i::before{ left:-5px; top:0;}
+    .burst i::after{ left:0; top:-5px;}
+
+    @keyframes pop{
+      0%{ transform: translate(0,0) rotate(45deg) scale(1); opacity:1;}
+      100%{ transform: translate(var(--dx), var(--dy)) rotate(45deg) scale(.6); opacity:0;}
     }
 
-    /* small footer note */
-    .hint{
-      font-size: 12px;
-      opacity: .75;
-      margin-top: 6px;
+    /* toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background:#ffffffd8;
+      border:1px solid #ffffff;
+      box-shadow: 0 14px 30px rgba(0,0,0,.12);
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:13px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 250ms ease, transform 250ms ease;
+      z-index:20;
+      backdrop-filter: blur(8px);
+      max-width:min(520px, 92vw);
+      text-align:center;
     }
-    .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(0,0,0,.06);
-      width: fit-content;
-      font-size: 12px;
-      opacity: .8;
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-6px);
     }
-    .spark{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--pink);
-      box-shadow: 0 0 0 6px rgba(255,77,141,.15);
+
+    /* small accessibility */
+    .sr{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
   </style>
 </head>
 <body>
-  <div class="hearts" aria-hidden="true" id="hearts"></div>
+  <div class="hearts" id="hearts"></div>
 
-  <div class="wrap">
+  <div class="shell">
+    <div class="status">
+      <div class="chip">💖 Tap the envelope</div>
+      <div class="chip">
+        🔊 <button class="btn-mini" id="musicBtn" aria-pressed="false">music: off</button>
+      </div>
+    </div>
+
     <div class="card" id="card">
-      <canvas id="confetti"></canvas>
+      <div class="scene">
+        <h1 class="title">A little message for you</h1>
+        <p class="subtitle">Open this tiny envelope ✨</p>
 
-      <section class="left">
-        <div class="envelope" id="envelope" role="img" aria-label="An envelope with a letter inside">
-          <div class="env-body"></div>
-          <div class="letter" id="letter">
-            <h2>Hi you 💌</h2>
-            <p>
-              Can't wait to see you on Thursday honey.<br/>
-              There’s one important question…
-            </p>
-            <div class="stamp">❤</div>
+        <div class="envelope-wrap">
+          <div class="envelope" id="envelope" role="button" aria-label="Open the envelope" tabindex="0">
+            <div class="env-body"></div>
+            <div class="env-sides"></div>
+            <div class="env-flap"></div>
+            <div class="seal"><span>♥</span></div>
+            <div class="letter">
+              <p id="preview">Tap to open 💌</p>
+            </div>
           </div>
-          <div class="env-flap"></div>
-          <div class="env-side"></div>
-          <div class="env-side r"></div>
-          <div class="env-bottom"></div>
         </div>
-      </section>
 
-      <section class="right">
-        <h1 class="title">Will you be my Valentine?</h1>
-        <p class="subtitle">
-          Tap the envelope honey 😌
+        <p class="hint">Tip: try pressing “No” 😉</p>
+      </div>
+
+      <div class="panel">
+        <div class="big" id="headline">Happy Valentine’s Day 💘</div>
+        <p class="msg" id="message">
+          You make ordinary days feel a little more magical.
+          <br/>Will you be my Valentine?
         </p>
 
-        <div class="btnrow" id="btnrow">
-          <button class="yes" id="yesBtn">Yes 💖</button>
-          <button class="no" id="noBtn">No 😭</button>
-        </div>
-
-        <div class="hint">
-          (Love you honey)
-        </div>
-      </section>
-
-      <div class="overlay" id="overlay" aria-hidden="true">
-        <div class="modal" role="dialog" aria-modal="true" aria-label="Valentine accepted">
-          <h3>YAYYY!! 💞</h3>
-          <p>
-            Best decision ever (Maybe third best). 💌<br/>
-            Happy Valentine’s Day!
-          </p>
-          <button class="close" id="closeBtn">Aww 🥹</button>
+        <div class="actions">
+          <button class="yes" id="yesBtn">Yes 💞</button>
+          <button class="no" id="noBtn">No 🙈</button>
         </div>
       </div>
     </div>
   </div>
 
-<script>
-  // --- floating hearts background ---
-  const hearts = document.getElementById('hearts');
-  function spawnHearts(count=18){
-    hearts.innerHTML = "";
-    const W = window.innerWidth;
-    for(let i=0;i<count;i++){
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- tiny built-in "music" (a sweet beep melody via WebAudio; no external files) -->
+  <script>
+    const card = document.getElementById('card');
+    const envelope = document.getElementById('envelope');
+    const hearts = document.getElementById('hearts');
+    const toast = document.getElementById('toast');
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const musicBtn = document.getElementById('musicBtn');
+
+    // --------- Envelope interaction ----------
+    function toggleOpen(){
+      card.classList.toggle('opened');
+      confettiBurst();
+      showToast(card.classList.contains('opened') ? "Opened! 💌" : "Closed! 💖");
+    }
+    envelope.addEventListener('click', toggleOpen);
+    envelope.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') toggleOpen(); });
+
+    // --------- Floating hearts background ----------
+    function spawnHeart(){
       const h = document.createElement('div');
       h.className = 'heart';
-      const left = Math.random()*W;
-      const dur = 6 + Math.random()*7;         // 6-13s
-      const delay = Math.random()*4;           // 0-4s
-      const size = 10 + Math.random()*14;      // 10-24px
-      const hueShift = (Math.random()*18 - 9); // tiny variation
-      h.style.left = left + 'px';
+      const size = 10 + Math.random()*18;
+      h.style.width = h.style.height = size + 'px';
+      h.style.left = (Math.random()*100) + 'vw';
+      h.style.bottom = (-20 - Math.random()*30) + 'px';
+      h.style.opacity = (0.10 + Math.random()*0.22).toFixed(2);
+      h.style.background = Math.random() < 0.25 ? '#ff77aa' : '#ff4d8d';
+      const dur = 6 + Math.random()*8;
       h.style.animationDuration = dur + 's';
-      h.style.animationDelay = delay + 's';
-      h.style.width = size + 'px';
-      h.style.height = size + 'px';
-      h.style.background = `hsl(${340 + hueShift} 100% 65%)`;
       hearts.appendChild(h);
+      setTimeout(()=>h.remove(), dur*1000 + 200);
     }
-  }
-  spawnHearts();
+    setInterval(spawnHeart, 380);
 
-  // --- envelope open/close ---
-  const envelope = document.getElementById('envelope');
-  const card = document.getElementById('card');
-  let opened = false;
-  envelope.addEventListener('click', () => {
-    opened = !opened;
-    envelope.classList.toggle('opened', opened);
-  });
+    // --------- No button runs away ----------
+    let dodges = 0;
+    function dodge(){
+      dodges++;
+      const rect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
 
-  // --- No button dodge ---
-  const noBtn = document.getElementById('noBtn');
-  const btnrow = document.getElementById('btnrow');
+      // safe area: keep inside card panel area
+      const minX = rect.left + 18;
+      const maxX = rect.right - 18 - btnRect.width;
+      const minY = rect.top + rect.height*0.55;
+      const maxY = rect.bottom - 24 - btnRect.height;
 
-  let dodgeCount = 0;
+      const x = minX + Math.random() * (maxX - minX);
+      const y = minY + Math.random() * (maxY - minY);
 
-  function moveNoButton(){
-    dodgeCount++;
-    const rowRect = btnrow.getBoundingClientRect();
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
 
-    // keep button within the row area (with padding)
-    const padding = 6;
-    const maxX = rowRect.width - noBtn.offsetWidth - padding;
-    const maxY = 70; // keep near row; enough for mobile wrap
+      const phrases = [
+        "Nope 😤",
+        "Try again 😏",
+        "Almost!",
+        "You can’t catch me 🙈",
+        "I believe in you 😂",
+      ];
+      showToast(phrases[(dodges-1) % phrases.length]);
 
-    const x = Math.max(padding, Math.random()*maxX);
-    const y = Math.max(-10, (Math.random()*maxY) - 18);
-
-    noBtn.style.position = 'absolute';
-    noBtn.style.left = x + 'px';
-    noBtn.style.top = y + 'px';
-    noBtn.style.transform = `rotate(${(Math.random()*10 - 5)}deg)`;
-
-    // After several dodges, make "No" look tired
-    if(dodgeCount >= 6){
-      noBtn.textContent = "Ok ok 😵";
-      noBtn.style.opacity = 0.85;
+      if (dodges === 1) confettiBurst(14);
     }
-    if(dodgeCount >= 9){
-      noBtn.textContent = "I can't 😭";
-      noBtn.style.opacity = 0.75;
-    }
-  }
+    // works on both mouse and touch
+    noBtn.addEventListener('mouseenter', dodge);
+    noBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); dodge(); }, {passive:false});
+    noBtn.addEventListener('click', dodge);
 
-  // Trigger dodge on hover (desktop) and touchstart (mobile)
-  noBtn.addEventListener('mouseenter', moveNoButton);
-  noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    moveNoButton();
-  }, {passive:false});
-  noBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    moveNoButton();
-  });
+    // --------- Yes button celebration ----------
+    yesBtn.addEventListener('click', ()=>{
+      confettiBurst(24);
+      showToast("YAY!! 💞💞💞");
+      document.getElementById('headline').textContent = "It’s a date 💘";
+      document.getElementById('message').innerHTML =
+        "Officially my favorite person. <br/>Thank you for being you 🥰";
+      // gently pin the No button back to normal
+      noBtn.style.position = '';
+      noBtn.style.left = '';
+      noBtn.style.top = '';
+    });
 
-  // --- Yes -> confetti + overlay ---
-  const yesBtn = document.getElementById('yesBtn');
-  const overlay = document.getElementById('overlay');
-  const closeBtn = document.getElementById('closeBtn');
-
-  // Confetti (simple canvas)
-  const canvas = document.getElementById('confetti');
-  const ctx = canvas.getContext('2d');
-
-  let confetti = [];
-  let anim = null;
-
-  function resizeCanvas(){
-    const r = card.getBoundingClientRect();
-    canvas.width = Math.floor(r.width * devicePixelRatio);
-    canvas.height = Math.floor(r.height * devicePixelRatio);
-    canvas.style.width = r.width + "px";
-    canvas.style.height = r.height + "px";
-    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-  }
-  window.addEventListener('resize', () => { resizeCanvas(); spawnHearts(); });
-
-  function burstConfetti(){
-    resizeCanvas();
-    confetti = [];
-    const r = card.getBoundingClientRect();
-    const originX = r.width * 0.72;
-    const originY = r.height * 0.45;
-
-    const colors = ["#ff4d8d","#ff77aa","#ffb3cc","#ffd166","#a0e7e5","#b4f8c8","#cdb4db"];
-
-    for(let i=0;i<140;i++){
-      confetti.push({
-        x: originX,
-        y: originY,
-        vx: (Math.random()*6 - 3),
-        vy: (Math.random()*-7 - 2),
-        g: 0.22 + Math.random()*0.12,
-        size: 4 + Math.random()*5,
-        rot: Math.random()*Math.PI,
-        vr: (Math.random()*0.3 - 0.15),
-        color: colors[(Math.random()*colors.length)|0],
-        life: 110 + (Math.random()*40|0)
-      });
+    // --------- Confetti burst (heart particles) ----------
+    function confettiBurst(n=18){
+      const b = document.createElement('div');
+      b.className = 'burst';
+      for(let i=0;i<n;i++){
+        const p = document.createElement('i');
+        const angle = Math.random()*Math.PI*2;
+        const r = 40 + Math.random()*120;
+        const dx = Math.cos(angle)*r;
+        const dy = Math.sin(angle)*r - (40 + Math.random()*40);
+        p.style.setProperty('--dx', dx.toFixed(1)+'px');
+        p.style.setProperty('--dy', dy.toFixed(1)+'px');
+        p.style.background = Math.random()<0.33 ? '#ff77aa' : (Math.random()<0.5 ? '#ff4d8d' : '#ff2d7a');
+        p.style.animationDelay = (Math.random()*80)+'ms';
+        b.appendChild(p);
+      }
+      document.body.appendChild(b);
+      setTimeout(()=>b.remove(), 950);
     }
 
-    if(anim) cancelAnimationFrame(anim);
-    tick();
-  }
-
-  function tick(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    confetti = confetti.filter(p => p.life-- > 0);
-
-    for(const p of confetti){
-      p.vy += p.g;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.vr;
-
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.7);
-      ctx.restore();
+    // --------- Toast ----------
+    let toastTimer = null;
+    function showToast(text){
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>toast.classList.remove('show'), 1300);
     }
 
-    if(confetti.length){
-      anim = requestAnimationFrame(tick);
-    }else{
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+    // --------- Tiny "music" via WebAudio ----------
+    let audioCtx = null;
+    let isPlaying = false;
+    let seqTimer = null;
+
+    function beep(freq, ms, when=0){
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.value = freq;
+      g.gain.value = 0.0001;
+      o.connect(g); g.connect(audioCtx.destination);
+
+      const t0 = audioCtx.currentTime + when;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.10, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + ms/1000);
+
+      o.start(t0);
+      o.stop(t0 + ms/1000 + 0.02);
     }
-  }
 
-  yesBtn.addEventListener('click', () => {
-    // open envelope for effect
-    envelope.classList.add('opened');
-    opened = true;
+    function playLoop(){
+      // simple 8-note loop (gentle)
+      const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 659.25, 523.25, 493.88];
+      let i = 0;
+      seqTimer = setInterval(()=>{
+        beep(notes[i%notes.length], 180);
+        i++;
+      }, 220);
+    }
 
-    burstConfetti();
-    overlay.classList.add('show');
-    overlay.setAttribute('aria-hidden','false');
-  });
+    function stopLoop(){
+      clearInterval(seqTimer);
+      seqTimer = null;
+    }
 
-  closeBtn.addEventListener('click', () => {
-    overlay.classList.remove('show');
-    overlay.setAttribute('aria-hidden','true');
-  });
+    musicBtn.addEventListener('click', async ()=>{
+      if(!audioCtx){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      // iOS requires a user gesture (this click counts)
+      if(audioCtx.state === 'suspended') await audioCtx.resume();
 
-  // click outside modal to close
-  overlay.addEventListener('click', (e) => {
-    if(e.target === overlay) closeBtn.click();
-  });
+      isPlaying = !isPlaying;
+      musicBtn.textContent = isPlaying ? "music: on" : "music: off";
+      musicBtn.setAttribute('aria-pressed', String(isPlaying));
 
-  // initial canvas size
-  resizeCanvas();
-</script>
+      if(isPlaying){
+        playLoop();
+        showToast("Music on 🎶");
+      }else{
+        stopLoop();
+        showToast("Music off 🤫");
+      }
+    });
+
+    // open by default after a second (feels alive)
+    setTimeout(()=>{ card.classList.add('opened'); }, 900);
+  </script>
 </body>
 </html>
